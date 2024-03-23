@@ -1,4 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
+import { LatLon } from './geolocation.type';
 
 export type MainSearchForm = FormGroup<{
   origin: FormControl<string | null>;
@@ -10,3 +11,8 @@ export type MainSearchForm = FormGroup<{
 }>;
 
 export type MainSearch = MainSearchForm['value'];
+
+export interface PlacesCoordsMetadata {
+  origin: LatLon | null;
+  destination: LatLon | null;
+}

@@ -4,24 +4,26 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import * as Papa from 'papaparse';
 import { Observable, map } from 'rxjs';
 import { AirportsHttpService } from '../services/airports-http.service';
+import { AirportsService } from '../services/airports.service';
+import { Airport } from '../types/airport.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AirportsLoaderResolver implements Resolve<boolean> {
-  constructor(private _airportsHttpService: AirportsHttpService) {}
+export class AirportsLoaderResolver implements Resolve<Airport[]> {
+  constructor(
+    private _airportsService: AirportsService,
+    private _airportsHttpService: AirportsHttpService,
+  ) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
-  ): Observable<any> {
-    return this._airportsHttpService.getAirportsList().pipe(
-      map((result) => {
-        return Papa.parse(result).data;
-      }),
-    );
+  ): Observable<Airport[]> {
+    return this._airportsHttpService
+      .getAirportsList()
+      .pipe(map(this._airportsService.csvStringToAirports));
   }
 }
