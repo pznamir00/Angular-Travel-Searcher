@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { NbCalendarRange } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, first, map, of, pluck, switchMap } from 'rxjs';
+import { debounceTime, map, of, pluck, switchMap } from 'rxjs';
 import { GeolocationHttpService } from './services/geolocation-http.service';
-import { Airport } from './types/airport.type';
+import { TravelsSearchService } from './services/travels-search.service';
 import {
   MainSearchForm,
   PlacesCoordsMetadata,
@@ -20,7 +19,6 @@ import { bothDatesRequired } from './validators/both-dates-required.validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainSearchComponent implements OnInit {
-  private _airports: Airport[] = [];
   private _placesCoordsMetadata: PlacesCoordsMetadata = {
     origin: null,
     destination: null,
@@ -31,7 +29,7 @@ export class MainSearchComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _geolocationHttpService: GeolocationHttpService,
-    private _route: ActivatedRoute,
+    private _travelsSearchService: TravelsSearchService,
   ) {
     this.form = this._fb.group({
       origin: new FormControl('', [Validators.required]),
@@ -44,13 +42,8 @@ export class MainSearchComponent implements OnInit {
 
   ngOnInit() {
     this._loadUserGeolocation();
-
     this._bindPlaceCoordsMetadataToFormControl('origin');
     this._bindPlaceCoordsMetadataToFormControl('destination');
-
-    this._route.data.pipe(first()).subscribe((data) => {
-      this._airports = data['airports'];
-    });
   }
 
   onDatesChange(dates: NbCalendarRange<Date>) {
@@ -58,8 +51,11 @@ export class MainSearchComponent implements OnInit {
   }
 
   onSubmit() {
-    const { value } = this.form;
-    console.log(value);
+    if (this.form.valid) {
+      const dates = this.form.value.dates as NbCalendarRange<Date>;
+      const origAndDest = this._placesCoordsMetadata;
+      this._travelsSearchService.searchTravels(origAndDest, dates);
+    }
   }
 
   private _loadUserGeolocation() {
