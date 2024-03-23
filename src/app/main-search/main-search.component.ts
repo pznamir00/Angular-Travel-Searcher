@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NbCalendarRange } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, first, map, of, pluck, switchMap } from 'rxjs';
 import { GeolocationHttpService } from './services/geolocation-http.service';
@@ -14,6 +10,7 @@ import {
   MainSearchForm,
   PlacesCoordsMetadata,
 } from './types/main-search-form.type';
+import { bothDatesRequired } from './validators/both-dates-required.validator';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +26,7 @@ export class MainSearchComponent implements OnInit {
     destination: null,
   };
   form: MainSearchForm;
+  today = new Date();
 
   constructor(
     private _fb: FormBuilder,
@@ -38,10 +36,9 @@ export class MainSearchComponent implements OnInit {
     this.form = this._fb.group({
       origin: new FormControl('', [Validators.required]),
       destination: new FormControl('', [Validators.required]),
-      date: new FormGroup({
-        from: new FormControl<Date | null>(null, [Validators.required]),
-        to: new FormControl<Date | null>(null, [Validators.required]),
-      }),
+      dates: new FormControl<NbCalendarRange<Date> | null>(null, [
+        bothDatesRequired,
+      ]),
     });
   }
 
@@ -56,8 +53,13 @@ export class MainSearchComponent implements OnInit {
     });
   }
 
+  onDatesChange(dates: NbCalendarRange<Date>) {
+    this.form.controls.dates.patchValue(dates);
+  }
+
   onSubmit() {
-    //
+    const { value } = this.form;
+    console.log(value);
   }
 
   private _loadUserGeolocation() {

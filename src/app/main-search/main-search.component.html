@@ -1,37 +1,53 @@
-<div>
-  <h1>Look for a trip</h1>
-
-  <form [formGroup]="form" (submit)="onSubmit()">
-    <label>
-      Origin
-      <input formControlName="origin" type="text" data-testId="origin-input" />
-    </label>
-    <label>
-      Destination
-      <input
-        formControlName="destination"
-        type="text"
-        data-testId="dest-input"
-      />
-    </label>
-    <div formGroupName="date">
-      <p>Date</p>
-      <label>
-        From
-        <input
-          formControlName="from"
-          type="date"
-          data-testId="date-from-input"
-        />
-      </label>
-      <label>
-        To
-        <input formControlName="to" type="date" data-testId="date-to-input" />
-      </label>
-    </div>
-
-    <button data-testId="submit-btn" type="submit" [disabled]="!form.valid">
-      Search
-    </button>
-  </form>
-</div>
+<nb-card>
+  <nb-card-header>
+    <h1>Look for a trip</h1>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form" (submit)="onSubmit()" class="main_search__form">
+      <div class="main_search__form__container">
+        <div class="main_search__form__container__part">
+          <div class="main_search__form__container__part__input">
+            <p>Origin</p>
+            <input
+              nbInput
+              formControlName="origin"
+              type="text"
+              data-testId="origin-input"
+            />
+            <button
+              nbButton
+              status="info"
+              class="main_search__form__container__part__input__side_btn"
+              size="small"
+            >
+              <nb-icon icon="navigation-2-outline"></nb-icon>
+            </button>
+          </div>
+          <div class="main_search__form__container__part__input">
+            <p>Destination</p>
+            <input
+              nbInput
+              formControlName="destination"
+              type="text"
+              data-testId="dest-input"
+            />
+          </div>
+        </div>
+        <div class="main_search__form__container__part">
+          <nb-calendar-range
+            [min]="today"
+            (rangeChange)="onDatesChange($event)"
+          ></nb-calendar-range>
+        </div>
+      </div>
+      <button
+        nbButton
+        data-testId="submit-btn"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Search
+      </button>
+    </form>
+  </nb-card-body>
+</nb-card>
