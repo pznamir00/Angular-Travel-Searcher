@@ -10,17 +10,19 @@ export class AirportsService {
 
   csvStringToAirports(csvString: string): Airport[] {
     const { data } = Papa.parse<string[]>(csvString);
-    return data.map(
-      (item): Airport => ({
-        id: +item[0],
-        name: item[1],
-        city: item[2],
-        country: item[3],
-        iata: item[4],
-        icao: item[5],
-        latitude: +item[6],
-        longitude: +item[7],
-      }),
-    );
+    return data
+      .filter((item) => item[12] === 'airport')
+      .map(
+        (item): Airport => ({
+          id: +item[0],
+          name: item[1],
+          city: item[2],
+          country: item[3],
+          iata: item[4],
+          icao: item[5],
+          latitude: +item[6],
+          longitude: +item[7],
+        }),
+      );
   }
 }

@@ -1,4 +1,9 @@
-import { createFeatureSelector } from '@ngrx/store';
-import { Airport } from 'src/app/types/airport.type';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { AirportState, adapter } from './airports.reducer';
 
-export const selectAirports = createFeatureSelector<Airport[]>('airports');
+export const selectAirportState =
+  createFeatureSelector<AirportState>('airports');
+
+const { selectAll } = adapter.getSelectors();
+
+export const selectAirports = createSelector(selectAirportState, selectAll);

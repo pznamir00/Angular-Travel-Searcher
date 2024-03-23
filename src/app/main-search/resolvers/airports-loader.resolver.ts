@@ -21,6 +21,8 @@ export class AirportsLoaderResolver implements Resolve<Airport[]> {
     state: RouterStateSnapshot,
   ): Observable<Airport[]> {
     this._store.dispatch(loadAirports());
-    return this._store.select(selectAirports).pipe(filter<Airport[]>(Boolean));
+    return this._store
+      .select(selectAirports)
+      .pipe(filter((val) => !!val.length));
   }
 }

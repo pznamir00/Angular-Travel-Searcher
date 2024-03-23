@@ -5,6 +5,7 @@ import { LatLon } from './geolocation.type';
 export type MainSearchForm = FormGroup<{
   origin: FormControl<string | null>;
   destination: FormControl<string | null>;
+  range: FormControl<number | null>;
   dates: FormControl<NbCalendarRange<Date> | null>;
 }>;
 

@@ -34,6 +34,7 @@ export class MainSearchComponent implements OnInit {
     this.form = this._fb.group({
       origin: new FormControl('', [Validators.required]),
       destination: new FormControl('', [Validators.required]),
+      range: new FormControl(50, [Validators.required]),
       dates: new FormControl<NbCalendarRange<Date> | null>(null, [
         bothDatesRequired,
       ]),
@@ -51,11 +52,10 @@ export class MainSearchComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const dates = this.form.value.dates as NbCalendarRange<Date>;
-      const origAndDest = this._placesCoordsMetadata;
-      this._travelsSearchService.searchTravels(origAndDest, dates);
-    }
+    const dates = this.form.value.dates as NbCalendarRange<Date>;
+    const range = this.form.value.range as number;
+    const origAndDest = this._placesCoordsMetadata;
+    this._travelsSearchService.searchTravels(origAndDest, dates, range);
   }
 
   private _loadUserGeolocation() {
