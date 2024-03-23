@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
-import { AirportsHttpService } from '../services/airports-http.service';
-import { AirportsService } from '../services/airports.service';
+import { AirportsHttpService } from '../../services/airports-http.service';
+import { AirportsService } from '../../services/airports.service';
 import { AirportsLoaderResolver } from './airports-loader.resolver';
 
 describe('AirportsLoaderResolver', () => {

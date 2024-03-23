@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbCalendarRange } from '@nebular/theme';
 import { first } from 'rxjs';
-import { Airport } from '../types/airport.type';
+import { Airport } from '../../types/airport.type';
 import { PlacesCoordsMetadata } from '../types/main-search-form.type';
 
 @Injectable({

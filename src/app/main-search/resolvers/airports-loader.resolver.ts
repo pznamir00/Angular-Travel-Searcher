@@ -4,26 +4,23 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, map } from 'rxjs';
-import { AirportsHttpService } from '../services/airports-http.service';
-import { AirportsService } from '../services/airports.service';
-import { Airport } from '../types/airport.type';
+import { Store } from '@ngrx/store';
+import { Observable, filter } from 'rxjs';
+import { loadAirports } from 'src/app/store/airports/airports.actions';
+import { selectAirports } from 'src/app/store/airports/airports.selector';
+import { Airport } from '../../types/airport.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AirportsLoaderResolver implements Resolve<Airport[]> {
-  constructor(
-    private _airportsService: AirportsService,
-    private _airportsHttpService: AirportsHttpService,
-  ) {}
+  constructor(private _store: Store) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<Airport[]> {
-    return this._airportsHttpService
-      .getAirportsList()
-      .pipe(map(this._airportsService.csvStringToAirports));
+    this._store.dispatch(loadAirports());
+    return this._store.select(selectAirports).pipe(filter<Airport[]>(Boolean));
   }
 }
