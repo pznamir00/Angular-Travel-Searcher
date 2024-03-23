@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular-builders/jest": "^14.1.0",
+    "@angular-eslint/schematics": "^1.0.0",
     "@angular/animations": "^14.2.0",
     "@angular/common": "^14.2.0",
     "@angular/compiler": "^14.2.0",
@@ -21,12 +22,15 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "@types/papaparse": "^5.3.14",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
     "jest-preset-angular": "^13.1.6",
+    "papaparse": "^5.4.1",
     "prettier": "^3.2.5",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "unused": "^0.2.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
