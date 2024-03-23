@@ -1,14 +1,37 @@
 <div>
   <h1>Look for a trip</h1>
 
-  <form [formGroup]="form">
+  <form [formGroup]="form" (submit)="onSubmit()">
     <label>
       Origin
-      <input formControlName="origin" type="text" />
+      <input formControlName="origin" type="text" data-testId="origin-input" />
     </label>
     <label>
       Destination
-      <input formControlName="destination" type="text" />
+      <input
+        formControlName="destination"
+        type="text"
+        data-testId="dest-input"
+      />
     </label>
+    <div formGroupName="date">
+      <p>Date</p>
+      <label>
+        From
+        <input
+          formControlName="from"
+          type="date"
+          data-testId="date-from-input"
+        />
+      </label>
+      <label>
+        To
+        <input formControlName="to" type="date" data-testId="date-to-input" />
+      </label>
+    </div>
+
+    <button data-testId="submit-btn" type="submit" [disabled]="!form.valid">
+      Search
+    </button>
   </form>
 </div>

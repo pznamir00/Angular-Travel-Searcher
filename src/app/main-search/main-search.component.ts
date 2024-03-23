@@ -1,8 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, first, map, of, switchMap } from 'rxjs';
+import { debounceTime, first, map, of, pluck, switchMap } from 'rxjs';
 import { GeolocationHttpService } from './services/geolocation-http.service';
 import { Airport } from './types/airport.type';
 import {
@@ -33,10 +38,10 @@ export class MainSearchComponent implements OnInit {
     this.form = this._fb.group({
       origin: new FormControl('', [Validators.required]),
       destination: new FormControl('', [Validators.required]),
-      date: {
-        from: new FormControl(new Date(), [Validators.required]),
-        to: new FormControl(new Date(), [Validators.required]),
-      },
+      date: new FormGroup({
+        from: new FormControl<Date | null>(null, [Validators.required]),
+        to: new FormControl<Date | null>(null, [Validators.required]),
+      }),
     });
   }
 
@@ -51,14 +56,17 @@ export class MainSearchComponent implements OnInit {
     });
   }
 
+  onSubmit() {
+    //
+  }
+
   private _loadUserGeolocation() {
     if ('navigator' in window) {
       window.navigator.geolocation.getCurrentPosition((position) => {
         this._geolocationHttpService
           .getAddressByCoordinates(position.coords)
-          .subscribe((result) => {
-            this.form.controls.origin.patchValue(result.display_name);
-          });
+          .pipe(pluck('display_name'))
+          .subscribe((val) => this.form.controls.origin.patchValue(val));
       });
     }
   }
@@ -69,7 +77,7 @@ export class MainSearchComponent implements OnInit {
     this.form.controls[placeKey].valueChanges
       .pipe(
         untilDestroyed(this),
-        debounceTime(500),
+        debounceTime(1000),
         switchMap((value) =>
           value
             ? this._geolocationHttpService.getCoordinatesByAddress(value)

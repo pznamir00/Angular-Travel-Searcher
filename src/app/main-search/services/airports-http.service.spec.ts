@@ -1,19 +1,31 @@
-/* tslint:disable:no-unused-variable */
-
-import { TestBed, inject } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { MockProvider } from 'ng-mocks';
+import { of } from 'rxjs';
 import { AirportsHttpService } from './airports-http.service';
 
-describe('Service: Airports', () => {
+describe('AirportsHttpService', () => {
+  let service: AirportsHttpService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AirportsHttpService],
+      providers: [
+        AirportsHttpService,
+        //@ts-ignore
+        MockProvider(HttpClient, {
+          get: jest.fn(() => of('MOCK')),
+        }),
+      ],
     });
+    service = TestBed.inject(AirportsHttpService);
   });
 
-  it('should ...', inject(
-    [AirportsHttpService],
-    (service: AirportsHttpService) => {
-      expect(service).toBeTruthy();
-    },
-  ));
+  describe('getAirportsList', () => {
+    it('returns http.get', (done) => {
+      service.getAirportsList().subscribe((res) => {
+        expect(res).toEqual('MOCK');
+        done();
+      });
+    });
+  });
 });

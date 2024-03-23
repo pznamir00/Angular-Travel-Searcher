@@ -1,16 +1,22 @@
-/* tslint:disable:no-unused-variable */
-
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AirportsService } from './airports.service';
 
-describe('Service: Airports', () => {
+describe('AirportsService', () => {
+  let service: AirportsService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AirportsService]
+      providers: [AirportsService],
     });
+    service = TestBed.inject(AirportsService);
   });
 
-  it('should ...', inject([AirportsService], (service: AirportsService) => {
-    expect(service).toBeTruthy();
-  }));
+  describe('csvStringToAirports', () => {
+    it('converts csv string to objects', () => {
+      const csv = `1,Some Airport,London,UK,SA,SAA,48,10
+      2,Airport 2,Pekin,China,PK,PKK,10,88`;
+      const result = service.csvStringToAirports(csv);
+      expect(result.length).toEqual(2);
+    });
+  });
 });

@@ -4,10 +4,10 @@ import { LatLon } from './geolocation.type';
 export type MainSearchForm = FormGroup<{
   origin: FormControl<string | null>;
   destination: FormControl<string | null>;
-  date: FormControl<{
+  date: FormGroup<{
     from: FormControl<Date | null>;
     to: FormControl<Date | null>;
-  } | null>;
+  }>;
 }>;
 
 export type MainSearch = MainSearchForm['value'];

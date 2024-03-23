@@ -8,7 +8,7 @@ import { Airport } from '../types/airport.type';
 export class AirportsService {
   constructor() {}
 
-  csvStringToAirports(csvString: string) {
+  csvStringToAirports(csvString: string): Airport[] {
     const { data } = Papa.parse<string[]>(csvString);
     return data.map(
       (item): Airport => ({
