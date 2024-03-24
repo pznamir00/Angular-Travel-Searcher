@@ -1,13 +1,13 @@
 import { createAction, props } from '@ngrx/store';
+import { SingleAirportByPoint } from 'src/app/results/types/airports-by-point.type';
 import { Flight } from 'src/app/results/types/flights-result.type';
-import { Airport } from 'src/app/types/airport.type';
 
 export const loadAllFlights = createAction(
   '[Flights] Load all',
   props<{
     startDate: Date;
     endDate: Date;
-    combinations: { origin: Airport; destination: Airport }[];
+    combinations: SingleAirportByPoint[];
   }>(),
 );
 
@@ -17,3 +17,5 @@ export const addFlights = createAction(
 );
 
 export const loadFlightsSuccess = createAction('[Flights] Load success');
+
+export const resetFlights = createAction('[Flights] Reset');

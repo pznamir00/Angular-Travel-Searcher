@@ -1,13 +1,15 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import combinate from 'combinate';
 import { first } from 'rxjs';
-import { AirportsByPoint } from './types/airports-by-point.type';
+import { loadAllFlights, resetFlights } from '../store/flights/flights.action';
+import { SingleAirportByPoint } from './types/airports-by-point.type';
 
 @Component({
   selector: 'app-results',
@@ -15,26 +17,28 @@ import { AirportsByPoint } from './types/airports-by-point.type';
   styleUrls: ['./results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResultsComponent implements OnInit, AfterViewInit {
-  private _airportsByPoint: AirportsByPoint;
-  // results$: Observable<any>;
-
-  constructor(private _route: ActivatedRoute) {
-    this._airportsByPoint = {
-      origin: [],
-      destination: [],
-    };
-  }
+export class ResultsComponent implements OnInit, OnDestroy {
+  constructor(
+    private _route: ActivatedRoute,
+    private _store: Store,
+  ) {}
 
   ngOnInit() {
-    this._route.data.pipe(first()).subscribe(({ airports }) => {
-      this._airportsByPoint = airports;
-    });
+    this._route.data
+      .pipe(first())
+      .subscribe(({ airports, startDate, endDate }) => {
+        const combinations = combinate(airports) as SingleAirportByPoint[];
+        this._store.dispatch(
+          loadAllFlights({
+            startDate,
+            endDate,
+            combinations,
+          }),
+        );
+      });
   }
 
-  ngAfterViewInit(): void {
-    const combinations = combinate<Record<number, AirportsByPoint[]>>(
-      this._airportsByPoint as any,
-    );
+  ngOnDestroy(): void {
+    this._store.dispatch(resetFlights());
   }
 }

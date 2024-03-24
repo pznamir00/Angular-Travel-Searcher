@@ -9,6 +9,7 @@ import { MainSearchModule } from './main-search/main-search.module';
 import { ResultsModule } from './results/results.module';
 import { AirportsEffects } from './store/airports/airports.effects';
 import { airportsReducer } from './store/airports/airports.reducer';
+import { FlightsEffects } from './store/flights/flights.effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,7 @@ import { airportsReducer } from './store/airports/airports.reducer';
     StoreModule.forRoot({
       airports: airportsReducer,
     }),
-    EffectsModule.forRoot([AirportsEffects]),
+    EffectsModule.forRoot([AirportsEffects, FlightsEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],

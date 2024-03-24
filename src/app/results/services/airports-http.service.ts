@@ -11,7 +11,7 @@ export class AirportsHttpService extends ApiService {
       `https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=${lat}&longitude=${lon}&radius=${radius}&page%5Blimit%5D=5&page%5Boffset%5D=0&sort=relevance`,
       {
         headers: {
-          Authorization: 'Bearer BV3KJU7kADbIuDoprfpVM57G2cJa',
+          Authorization: 'Bearer vl4ESgaGSwuAGmG2Jf2akrcsRJFf',
         },
       },
     );

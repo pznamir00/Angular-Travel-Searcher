@@ -4,3 +4,8 @@ export interface AirportsByPoint {
   origin: Airport[];
   destination: Airport[];
 }
+
+export interface SingleAirportByPoint {
+  origin: Airport;
+  destination: Airport;
+}
