@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, catchError, combineLatest, map, mergeMap } from 'rxjs';
-import { AirportsHttpService } from 'src/app/results/services/airports-http.service';
+import { FlightsHttpService } from 'src/app/results/services/flights-http.service';
 import { loadAirports, loadAirportsSuccess } from './airports.actions';
 
 @Injectable()
 export class AirportsEffects {
   constructor(
     private _actions$: Actions,
-    private _airportsHttpService: AirportsHttpService,
+    private _airportsHttpService: FlightsHttpService,
   ) {}
 
   loadAirports$ = createEffect(() => {

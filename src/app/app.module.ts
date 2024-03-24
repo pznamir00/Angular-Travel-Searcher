@@ -10,6 +10,7 @@ import { ResultsModule } from './results/results.module';
 import { AirportsEffects } from './store/airports/airports.effects';
 import { airportsReducer } from './store/airports/airports.reducer';
 import { FlightsEffects } from './store/flights/flights.effects';
+import { flightsReducer } from './store/flights/flights.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { FlightsEffects } from './store/flights/flights.effects';
     NbThemeModule.forRoot({ name: 'dark' }),
     StoreModule.forRoot({
       airports: airportsReducer,
+      flights: flightsReducer,
     }),
     EffectsModule.forRoot([AirportsEffects, FlightsEffects]),
   ],

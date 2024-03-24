@@ -11,6 +11,7 @@ export interface Meta {
 export interface Flight {
   type: string;
   id: string;
+  key: string;
   source: string;
   instantTicketingRequired: boolean;
   nonHomogeneous: boolean;

@@ -1,4 +1,14 @@
 <nb-card>
   <nb-card-header> Results </nb-card-header>
-  <nb-card-body> </nb-card-body>
+  <nb-card-body>
+    <nb-card *ngFor="let flight of flights$ | async">
+      <nb-card-body>
+        <p>{{ flight | flightName }}</p>
+        <p>${{ flight.price.total }}</p>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-body>
+  <nb-card-footer>
+    <span>Loaded {{ loadedNum$ | async }} / {{ totalNum$ | async }}</span>
+  </nb-card-footer>
 </nb-card>

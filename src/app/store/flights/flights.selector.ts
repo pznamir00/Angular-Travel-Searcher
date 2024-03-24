@@ -7,3 +7,13 @@ export const selectFlightsState =
 const { selectAll } = adapter.getSelectors();
 
 export const selectFlights = createSelector(selectFlightsState, selectAll);
+
+export const selectFlightsLoadedNumber = createSelector(
+  selectFlightsState,
+  (state) => state.loaded,
+);
+
+export const selectFlightsTotalNumber = createSelector(
+  selectFlightsState,
+  (state) => state.total,
+);

@@ -7,9 +7,16 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import combinate from 'combinate';
-import { first } from 'rxjs';
-import { loadAllFlights, resetFlights } from '../store/flights/flights.action';
+import { Observable, combineLatest, filter, first } from 'rxjs';
+import { loadAllFlights } from '../store/flights/flights.action';
+import {
+  selectFlights,
+  selectFlightsLoadedNumber,
+  selectFlightsTotalNumber,
+} from '../store/flights/flights.selector';
+import { FlightsService } from './services/flights.service';
 import { SingleAirportByPoint } from './types/airports-by-point.type';
+import { Flight } from './types/flights-result.type';
 
 @Component({
   selector: 'app-results',
@@ -18,27 +25,38 @@ import { SingleAirportByPoint } from './types/airports-by-point.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultsComponent implements OnInit, OnDestroy {
+  flights$: Observable<Flight[]>;
+  loadedNum$: Observable<number>;
+  totalNum$: Observable<number>;
+  loading$: Observable<boolean>;
+
   constructor(
     private _route: ActivatedRoute,
     private _store: Store,
-  ) {}
+    private _flightsService: FlightsService,
+  ) {
+    this.flights$ = this._store.select(selectFlights);
+    this.loadedNum$ = this._store.select(selectFlightsLoadedNumber);
+    this.totalNum$ = this._store.select(selectFlightsTotalNumber);
+    this.loading$ = this._flightsService.loading$;
+  }
 
   ngOnInit() {
-    this._route.data
+    combineLatest([
+      this._route.queryParams,
+      this._route.data.pipe(filter(({ airports }) => airports)),
+    ])
       .pipe(first())
-      .subscribe(({ airports, startDate, endDate }) => {
-        const combinations = combinate(airports) as SingleAirportByPoint[];
+      .subscribe(([{ startDate, endDate }, { airports }]) => {
         this._store.dispatch(
           loadAllFlights({
             startDate,
             endDate,
-            combinations,
+            combinations: combinate(airports) as SingleAirportByPoint[],
           }),
         );
       });
   }
 
-  ngOnDestroy(): void {
-    this._store.dispatch(resetFlights());
-  }
+  ngOnDestroy(): void {}
 }

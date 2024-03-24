@@ -5,8 +5,8 @@ import { Flight } from 'src/app/results/types/flights-result.type';
 export const loadAllFlights = createAction(
   '[Flights] Load all',
   props<{
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     combinations: SingleAirportByPoint[];
   }>(),
 );
