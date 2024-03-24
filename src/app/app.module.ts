@@ -1,3 +1,4 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NbLayoutModule, NbThemeModule } from '@nebular/theme';
@@ -5,6 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MainSearchModule } from './main-search/main-search.module';
 import { ResultsModule } from './results/results.module';
 import { AirportsEffects } from './store/airports/airports.effects';
@@ -27,7 +29,9 @@ import { flightsReducer } from './store/flights/flights.reducer';
     }),
     EffectsModule.forRoot([AirportsEffects, FlightsEffects]),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

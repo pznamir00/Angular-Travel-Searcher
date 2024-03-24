@@ -3,8 +3,6 @@ import { ApiService } from '../../services/api.service';
 import { AirportsResult } from '../../types/airport.type';
 import { FlightsResult } from '../types/flights-result.type';
 
-const TOKEN = 'BqQLjAdtA3Bw73alL2VRPb8i7cGT';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -12,11 +10,6 @@ export class FlightsHttpService extends ApiService {
   getAirportsList(lat: number, lon: number, radius: number) {
     return this.http.get<AirportsResult>(
       `https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=${lat}&longitude=${lon}&radius=${radius}&page%5Blimit%5D=5&page%5Boffset%5D=0&sort=relevance`,
-      {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      },
     );
   }
 
@@ -63,11 +56,6 @@ export class FlightsHttpService extends ApiService {
               },
             ],
           },
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
         },
       },
     );
