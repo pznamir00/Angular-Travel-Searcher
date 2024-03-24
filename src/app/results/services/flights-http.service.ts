@@ -3,7 +3,7 @@ import { ApiService } from '../../services/api.service';
 import { AirportsResult } from '../../types/airport.type';
 import { FlightsResult } from '../types/flights-result.type';
 
-const TOKEN = '4KGnCCWGV0Pldz3JAACV6HczGPP8';
+const TOKEN = 'BqQLjAdtA3Bw73alL2VRPb8i7cGT';
 
 @Injectable({
   providedIn: 'root',

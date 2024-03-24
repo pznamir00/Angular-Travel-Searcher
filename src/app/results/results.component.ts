@@ -52,7 +52,10 @@ export class ResultsComponent implements OnInit, OnDestroy {
           loadAllFlights({
             startDate,
             endDate,
-            combinations: combinate(airports) as SingleAirportByPoint[],
+            combinations: (combinate(airports) as SingleAirportByPoint[]).slice(
+              0,
+              5,
+            ),
           }),
         );
       });
