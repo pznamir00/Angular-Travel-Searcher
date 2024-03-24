@@ -11,7 +11,7 @@ export class AirportsService {
   csvStringToAirports(csvString: string): Airport[] {
     const { data } = Papa.parse<string[]>(csvString);
     return data
-      .filter((item) => item[12] === 'airport')
+      .filter((item) => item[4] !== '\\N' && item[12] === 'airport')
       .map(
         (item): Airport => ({
           id: +item[0],
