@@ -13,6 +13,7 @@ import {
 } from 'rxjs';
 import { FlightsHttpService } from 'src/app/results/services/flights-http.service';
 import { FlightsService } from 'src/app/results/services/flights.service';
+import { v4 as uuidv4 } from 'uuid';
 import {
   addFlights,
   loadAllFlights,
@@ -44,9 +45,14 @@ export class FlightsEffects {
                   endDate,
                 )
                 .pipe(
-                  tap((result) =>
-                    this._store.dispatch(addFlights({ flights: result.data })),
-                  ),
+                  map((result) => structuredClone(result)),
+                  tap((result) => {
+                    const flights = result.data.map((flight) => ({
+                      ...flight,
+                      key: uuidv4(),
+                    }));
+                    this._store.dispatch(addFlights({ flights }));
+                  }),
                   delay(500),
                 ),
             ),
