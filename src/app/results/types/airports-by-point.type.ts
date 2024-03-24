@@ -1,0 +1,6 @@
+import { Airport } from 'src/app/types/airport.type';
+
+export interface AirportsByPoint {
+  origin: Airport[];
+  destination: Airport[];
+}

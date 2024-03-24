@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainSearchModule } from './main-search/main-search.module';
+import { ResultsModule } from './results/results.module';
 import { AirportsEffects } from './store/airports/airports.effects';
 import { airportsReducer } from './store/airports/airports.reducer';
 
@@ -15,6 +16,7 @@ import { airportsReducer } from './store/airports/airports.reducer';
     BrowserModule,
     AppRoutingModule,
     MainSearchModule,
+    ResultsModule,
     NbLayoutModule,
     NbThemeModule.forRoot({ name: 'dark' }),
     StoreModule.forRoot({

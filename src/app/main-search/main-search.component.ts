@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NbCalendarRange } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, map, of, pluck, switchMap } from 'rxjs';
 import { GeolocationHttpService } from './services/geolocation-http.service';
-import { TravelsSearchService } from './services/travels-search.service';
 import {
   MainSearchForm,
   PlacesCoordsMetadata,
 } from './types/main-search-form.type';
+import { dateToSimpleFormat } from './utils/date.utils';
 import { bothDatesRequired } from './validators/both-dates-required.validator';
 
 @UntilDestroy()
@@ -29,7 +30,7 @@ export class MainSearchComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _geolocationHttpService: GeolocationHttpService,
-    private _travelsSearchService: TravelsSearchService,
+    private _router: Router,
   ) {
     this.form = this._fb.group({
       origin: new FormControl('', [Validators.required]),
@@ -55,7 +56,17 @@ export class MainSearchComponent implements OnInit {
     const dates = this.form.value.dates as NbCalendarRange<Date>;
     const range = this.form.value.range as number;
     const origAndDest = this._placesCoordsMetadata;
-    this._travelsSearchService.searchTravels(origAndDest, dates, range);
+    this._router.navigate(['results'], {
+      queryParams: {
+        startDate: dateToSimpleFormat(dates.start),
+        endDate: dateToSimpleFormat(dates.end as Date),
+        range,
+        origLat: origAndDest.origin?.latitude,
+        origLon: origAndDest.origin?.longitude,
+        destLat: origAndDest.destination?.latitude,
+        destLon: origAndDest.destination?.longitude,
+      },
+    });
   }
 
   private _loadUserGeolocation() {

@@ -1,15 +1,15 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { Airport } from 'src/app/types/airport.type';
+import { AirportsByPoint } from 'src/app/results/types/airports-by-point.type';
 import { loadAirportsSuccess } from './airports.actions';
 
-export interface AirportState extends EntityState<Airport> {}
+type AirportState = AirportsByPoint;
 
-export const adapter = createEntityAdapter<Airport>();
+const initialValue: AirportState = {
+  origin: [],
+  destination: [],
+};
 
 export const airportsReducer = createReducer(
-  adapter.getInitialState(),
-  on(loadAirportsSuccess, (state, { airports }) =>
-    adapter.setAll(airports, state),
-  ),
+  initialValue,
+  on(loadAirportsSuccess, (_, { airports }) => ({ ...airports })),
 );
