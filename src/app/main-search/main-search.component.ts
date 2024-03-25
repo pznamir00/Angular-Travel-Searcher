@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NbCalendarRange } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, map, of, pluck, switchMap } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { pluck } from 'rxjs';
 import { GeolocationHttpService } from './services/geolocation-http.service';
-import {
-  MainSearchForm,
-  PlacesCoordsMetadata,
-} from './types/main-search-form.type';
+import { LatLon } from './types/geolocation.type';
+import { MainSearchForm } from './types/main-search-form.type';
 import { dateToSimpleFormat } from './utils/date.utils';
 import { bothDatesRequired } from './validators/both-dates-required.validator';
 
@@ -17,13 +15,8 @@ import { bothDatesRequired } from './validators/both-dates-required.validator';
   selector: 'app-main-search',
   templateUrl: './main-search.component.html',
   styleUrls: ['./main-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainSearchComponent implements OnInit {
-  private _placesCoordsMetadata: PlacesCoordsMetadata = {
-    origin: null,
-    destination: null,
-  };
   form: MainSearchForm;
   today = new Date();
 
@@ -44,8 +37,6 @@ export class MainSearchComponent implements OnInit {
 
   ngOnInit() {
     this._loadUserGeolocation();
-    this._bindPlaceCoordsMetadataToFormControl('origin');
-    this._bindPlaceCoordsMetadataToFormControl('destination');
   }
 
   onDatesChange(dates: NbCalendarRange<Date>) {
@@ -55,16 +46,18 @@ export class MainSearchComponent implements OnInit {
   onSubmit() {
     const dates = this.form.value.dates as NbCalendarRange<Date>;
     const range = this.form.value.range as number;
-    const origAndDest = this._placesCoordsMetadata;
+    const origCoords = this.form.controls.origin.metadata?.coords as LatLon;
+    const destCoords = this.form.controls.destination.metadata
+      ?.coords as LatLon;
     this._router.navigate(['results'], {
       queryParams: {
         startDate: dateToSimpleFormat(dates.start),
         endDate: dateToSimpleFormat(dates.end as Date),
         range,
-        origLat: origAndDest.origin?.latitude,
-        origLon: origAndDest.origin?.longitude,
-        destLat: origAndDest.destination?.latitude,
-        destLon: origAndDest.destination?.longitude,
+        origLat: origCoords.latitude,
+        origLon: origCoords.longitude,
+        destLat: destCoords.latitude,
+        destLon: destCoords.longitude,
       },
     });
   }
@@ -78,26 +71,5 @@ export class MainSearchComponent implements OnInit {
           .subscribe((val) => this.form.controls.origin.patchValue(val));
       });
     }
-  }
-
-  private _bindPlaceCoordsMetadataToFormControl(
-    placeKey: keyof PlacesCoordsMetadata,
-  ) {
-    this.form.controls[placeKey].valueChanges
-      .pipe(
-        untilDestroyed(this),
-        debounceTime(1000),
-        switchMap((value) =>
-          value
-            ? this._geolocationHttpService.getCoordinatesByAddress(value)
-            : of(null),
-        ),
-        map((value) =>
-          value ? { latitude: +value[0].lat, longitude: +value[0].lon } : null,
-        ),
-      )
-      .subscribe((result) => {
-        this._placesCoordsMetadata[placeKey] = result;
-      });
   }
 }

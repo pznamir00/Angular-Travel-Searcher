@@ -8,12 +8,10 @@
         <div class="main_search__form__container__part">
           <div class="main_search__form__container__part__input">
             <p>Origin</p>
-            <input
-              nbInput
+            <app-address-input
               formControlName="origin"
-              type="text"
               data-testId="origin-input"
-            />
+            ></app-address-input>
             <button
               nbButton
               status="info"
@@ -25,12 +23,10 @@
           </div>
           <div class="main_search__form__container__part__input">
             <p>Destination</p>
-            <input
-              nbInput
+            <app-address-input
               formControlName="destination"
-              type="text"
               data-testId="dest-input"
-            />
+            ></app-address-input>
           </div>
           <div class="main_search__form__container__part__input">
             <p>Range (km)</p>
