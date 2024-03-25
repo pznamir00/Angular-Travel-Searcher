@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import combinate from 'combinate';
@@ -16,7 +16,6 @@ import { Flight } from './types/flights-result.type';
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultsComponent implements OnInit {
   flights$: Observable<Flight[]>;

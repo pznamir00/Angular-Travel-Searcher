@@ -13,12 +13,9 @@
     >
   </nb-card-header>
   <nb-card-body>
-    <nb-card *ngFor="let flight of flights" data-testId="flight-card">
-      <nb-card-body>
-        <p>{{ flight | flightName }}</p>
-        <span>{{ flight | flightTimes }}</span>
-        <p>${{ flight.price.total }}</p>
-      </nb-card-body>
-    </nb-card>
+    <app-result-card
+      *ngFor="let flight of flights"
+      [flight]="flight"
+    ></app-result-card>
   </nb-card-body>
 </nb-card>

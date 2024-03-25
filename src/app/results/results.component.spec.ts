@@ -9,6 +9,7 @@ import { FlightsEffects } from '../store/flights/flights.effects';
 import { flightsReducer } from '../store/flights/flights.reducer';
 import { FlightNamePipe } from './pipes/flight-name.pipe';
 import { FlightTimesPipe } from './pipes/flight-times.pipe';
+import { ResultCardComponent } from './result-card/result-card.component';
 import { ResultsComponent } from './results.component';
 import { FlightsHttpService } from './services/flights-http.service';
 
@@ -58,7 +59,11 @@ const setup = async () => {
       StoreModule.forRoot({ flights: flightsReducer }),
       EffectsModule.forRoot([FlightsEffects]),
     ],
-    declarations: [MockPipe(FlightNamePipe), MockPipe(FlightTimesPipe)],
+    declarations: [
+      ResultCardComponent,
+      MockPipe(FlightNamePipe),
+      MockPipe(FlightTimesPipe),
+    ],
   });
   return fixture;
 };
