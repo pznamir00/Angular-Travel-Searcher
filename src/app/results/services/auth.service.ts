@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from 'src/app/services/api.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
+import { ApiService } from '../../services/api.service';
 import { GetTokenResponse } from '../types/get-token-response.type';
 
 @Injectable({

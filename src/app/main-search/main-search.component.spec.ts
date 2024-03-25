@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { render, screen } from '@testing-library/angular';
 import { MockProvider } from 'ng-mocks';
@@ -34,6 +35,7 @@ const setup = async () => {
   };
 
   const fixture = await render(MainSearchComponent, {
+    schemas: [NO_ERRORS_SCHEMA],
     imports: [ReactiveFormsModule],
     providers: [
       //@ts-ignore

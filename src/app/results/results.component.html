@@ -1,16 +1,19 @@
 <nb-card *ngIf="flights$ | async as flights">
   <nb-card-header>
-    <h1>{{ flights.length }} Results</h1>
+    <h1 data-testId="flight-result-text">{{ flights.length }} Results</h1>
 
     <nb-progress-bar
+      data-testId="progress-bar"
       [value]="(((loadedNum$ | async) ?? 0) / ((totalNum$ | async) ?? 0)) * 100"
-      [status]="(loading$ | async) ? 'info' : 'success'"
+      [status]="
+        (loadedNum$ | async) === (totalNum$ | async) ? 'info' : 'success'
+      "
       >Checked {{ loadedNum$ | async }} /
       {{ totalNum$ | async }}</nb-progress-bar
     >
   </nb-card-header>
   <nb-card-body>
-    <nb-card *ngFor="let flight of flights">
+    <nb-card *ngFor="let flight of flights" data-testId="flight-card">
       <nb-card-body>
         <p>{{ flight | flightName }}</p>
         <span>{{ flight | flightTimes }}</span>

@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import combinate from 'combinate';
@@ -14,7 +9,6 @@ import {
   selectFlightsLoadedNumber,
   selectFlightsTotalNumber,
 } from '../store/flights/flights.selector';
-import { FlightsService } from './services/flights.service';
 import { SingleAirportByPoint } from './types/airports-by-point.type';
 import { Flight } from './types/flights-result.type';
 
@@ -24,21 +18,18 @@ import { Flight } from './types/flights-result.type';
   styleUrls: ['./results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResultsComponent implements OnInit, OnDestroy {
+export class ResultsComponent implements OnInit {
   flights$: Observable<Flight[]>;
   loadedNum$: Observable<number>;
   totalNum$: Observable<number>;
-  loading$: Observable<boolean>;
 
   constructor(
     private _route: ActivatedRoute,
     private _store: Store,
-    private _flightsService: FlightsService,
   ) {
     this.flights$ = this._store.select(selectFlights);
     this.loadedNum$ = this._store.select(selectFlightsLoadedNumber);
     this.totalNum$ = this._store.select(selectFlightsTotalNumber);
-    this.loading$ = this._flightsService.loading$;
   }
 
   ngOnInit() {
@@ -60,6 +51,4 @@ export class ResultsComponent implements OnInit, OnDestroy {
         );
       });
   }
-
-  ngOnDestroy(): void {}
 }

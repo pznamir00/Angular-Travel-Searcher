@@ -12,14 +12,13 @@ import {
   tap,
   toArray,
 } from 'rxjs';
-import { FlightsHttpService } from 'src/app/results/services/flights-http.service';
-import { FlightsService } from 'src/app/results/services/flights.service';
+import deepcopy from 'ts-deepcopy';
 import { v4 as uuidv4 } from 'uuid';
+import { FlightsHttpService } from '../../results/services/flights-http.service';
 import {
   addFlights,
   loadAllFlights,
   loadFlightsSuccess,
-  resetFlights,
 } from './flights.action';
 
 @Injectable()
@@ -28,7 +27,6 @@ export class FlightsEffects {
     private _actions$: Actions,
     private _flightsHttpService: FlightsHttpService,
     private _store: Store,
-    private _flightsService: FlightsService,
   ) {}
 
   loadAllFlights$ = createEffect(() => {
@@ -36,8 +34,8 @@ export class FlightsEffects {
       ofType(loadAllFlights),
       mergeMap(({ startDate, endDate, combinations }) => {
         return from(combinations).pipe(
-          concatMap((airportsByPoint) =>
-            this._flightsHttpService
+          concatMap((airportsByPoint) => {
+            return this._flightsHttpService
               .getFlightsList(
                 airportsByPoint.origin.iataCode,
                 airportsByPoint.destination.iataCode,
@@ -45,7 +43,7 @@ export class FlightsEffects {
                 endDate,
               )
               .pipe(
-                map((result) => structuredClone(result)),
+                map((result) => deepcopy(result)),
                 tap((result) => {
                   const flights = result.data.map((flight) => ({
                     ...flight,
@@ -54,8 +52,8 @@ export class FlightsEffects {
                   this._store.dispatch(addFlights({ flights }));
                 }),
                 delay(500),
-              ),
-          ),
+              );
+          }),
           toArray(),
           map(() => loadFlightsSuccess()),
           catchError(() => EMPTY),
@@ -63,28 +61,4 @@ export class FlightsEffects {
       }),
     );
   });
-
-  loadFlightsSuccess$ = createEffect(
-    () => {
-      return this._actions$.pipe(
-        ofType(loadFlightsSuccess),
-        tap(() => {
-          this._flightsService.setLoading(false);
-        }),
-      );
-    },
-    { dispatch: false },
-  );
-
-  resetFlights$ = createEffect(
-    () => {
-      return this._actions$.pipe(
-        ofType(resetFlights),
-        tap(() => {
-          this._flightsService.setLoading(true);
-        }),
-      );
-    },
-    { dispatch: false },
-  );
 }

@@ -13,7 +13,8 @@ describe('FlightsHttpService', () => {
         FlightsHttpService,
         //@ts-ignore
         MockProvider(HttpClient, {
-          get: jest.fn(() => of('MOCK')),
+          get: jest.fn(() => of('GET RESPONSE')),
+          post: jest.fn(() => of('POST RESPONSE')),
         }),
       ],
     });
@@ -22,10 +23,23 @@ describe('FlightsHttpService', () => {
 
   describe('getAirportsList', () => {
     it('returns http.get', (done) => {
-      service.getAirportsList().subscribe((res) => {
-        expect(res).toEqual('MOCK');
+      service.getAirportsList(5, 6, 10).subscribe((res) => {
+        //@ts-ignore
+        expect(res).toEqual('GET RESPONSE');
         done();
       });
+    });
+  });
+
+  describe('getFlightsList', () => {
+    it('returns http.post', (done) => {
+      service
+        .getFlightsList('xxx', 'yyy', '2020-10-10', '2022-05-05')
+        .subscribe((res) => {
+          //@ts-ignore
+          expect(res).toEqual('POST RESPONSE');
+          done();
+        });
     });
   });
 });
