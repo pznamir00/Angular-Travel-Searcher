@@ -14,6 +14,7 @@ import {
   NbIconModule,
   NbInputModule,
 } from '@nebular/theme';
+import { InputWithCoordsDirective } from './directives/input-with-coords.directive';
 import { MainSearchComponent } from './main-search.component';
 import { AddressInputComponent } from './value-accessors/address-input/address-input.component';
 
@@ -30,7 +31,11 @@ import { AddressInputComponent } from './value-accessors/address-input/address-i
     NbEvaIconsModule,
     FormsModule,
   ],
-  declarations: [MainSearchComponent, AddressInputComponent],
+  declarations: [
+    MainSearchComponent,
+    AddressInputComponent,
+    InputWithCoordsDirective,
+  ],
   exports: [MainSearchComponent],
   providers: [
     {
