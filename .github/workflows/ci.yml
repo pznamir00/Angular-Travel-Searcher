@@ -1,0 +1,43 @@
+name: CI
+
+# This workflow is triggered whenever a new PR is created on the main branch
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+
+jobs:
+  check-formatting:
+    name: 'Run format checking'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v2
+      name: 'Checkout repository'
+    - name: 'Install Dependencies'
+      run: npm install
+    - name: 'Check Formatting'
+      run: npm run check-formatting
+      
+  test:
+    name: 'Run unit tests'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v2
+      name: 'Checkout repository'
+    - name: 'Install Dependencies'
+      run: npm install
+    - name: 'Run Tests'
+      run: npm run test
