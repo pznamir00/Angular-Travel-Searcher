@@ -7,6 +7,7 @@ on:
 jobs:
   add_comment:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: show github context
         run: echo '${{ github.event.issue.number }}'
