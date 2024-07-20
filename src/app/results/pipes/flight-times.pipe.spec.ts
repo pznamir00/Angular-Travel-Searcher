@@ -23,7 +23,7 @@ describe('FlightTimesPipe', () => {
       ],
     };
     expect(pipe.transform(flight)).toEqual(
-      'Sat, 10 Oct 2020 08:00:00 - Sun, 11 Oct 2020 13:00:00',
+      'Sat, 10 Oct 2020 09:00:00 - Sun, 11 Oct 2020 14:00:00',
     );
   });
 });
