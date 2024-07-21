@@ -17,11 +17,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli
-
       - name: Deploy
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
         with:
-          path: dist/${{ github.event.repository.name }}/browser                           
-          build_command: ng build --base-href=/${{ github.event.repository.name }}/ --configuration staging
+          path: dist/${{ github.event.repository.name }}/browser                            
+          build_command: npm run build -- --base-href=/${{ github.event.repository.name }}/ --configuration staging
