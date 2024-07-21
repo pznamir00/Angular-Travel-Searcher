@@ -21,8 +21,8 @@ jobs:
 
       - name: 'Build'
         run: |
-          - npm install -g @angular/cli
-          - ng build --configuration staging
+          npm install -g @angular/cli
+          ng build --configuration staging
 
       - name: 'Deploy'
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
