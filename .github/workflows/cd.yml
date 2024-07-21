@@ -8,21 +8,20 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
 
-      - name: 'Install'
-        run: npm install
-
-      - name: 'Build'
-        run: |
-          npm install -g @angular/cli
-          ng build --configuration staging
-
-      - name: 'Deploy'
+      - name: Deploy
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
+        with:
+          path: dist/${{ github.event.repository.name }}/browser                           
+          build_command: npm run build -- --base-href=/${{ github.event.repository.name }}/
