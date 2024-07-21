@@ -13,7 +13,6 @@ on:
     paths:
       - 'src/**'
 
-
 jobs:
   check-formatting:
     name: 'Run format checking'
@@ -24,8 +23,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       name: 'Checkout repository'
+
+    - name: 'Cache Node modules'
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: 'Install Dependencies'
       run: npm install
+
     - name: 'Check Formatting'
       run: npm run check-formatting
       
@@ -38,7 +47,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       name: 'Checkout repository'
+
+    - name: 'Cache Node modules'
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: 'Install Dependencies'
       run: npm install
+      
     - name: 'Run Tests'
       run: npm run test
