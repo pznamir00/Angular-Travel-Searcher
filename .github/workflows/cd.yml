@@ -19,6 +19,3 @@ jobs:
     steps:
       - name: Deploy
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
-        with:
-          path: dist/${{ github.event.repository.name }}/browser                            
-          build_command: npm run build -- --base-href=/${{ github.event.repository.name }}/ --configuration staging
